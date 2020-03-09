@@ -2,14 +2,20 @@
 #include <memory>
 #include <vector>
 
-#include "MeasurementW.h"
 #include "MeasurementFactory.h"
+#include "MeasurementW.h"
 
 class TimeSeries {
    public:
     TimeSeries();
+    ~TimeSeries() = default;
+    explicit TimeSeries(std::vector<MeasurementW> value);
+
+    // Delete the copy constructor
     TimeSeries(const TimeSeries &other) = delete;
-    TimeSeries(std::vector<MeasurementW> value);
+
+    // Move constructor
+    TimeSeries(TimeSeries &&other) = default;
 
     static TimeSeries make_random(const MeasurementFactory &factory, int size);
 
@@ -17,6 +23,7 @@ class TimeSeries {
 
     TimeSeries operator+(const TimeSeries &other) const;
     TimeSeries &operator+=(const TimeSeries &other);
+    TimeSeries &operator=(TimeSeries &&other);
     bool operator<(const TimeSeries &other) const;
 
    private:

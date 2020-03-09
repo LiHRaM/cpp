@@ -1,7 +1,6 @@
 #include "TimeSeries.h"
 
 #include <functional>
-#include <iostream>
 #include <random>
 
 TimeSeries TimeSeries::operator+(const TimeSeries& other) const {
@@ -25,8 +24,7 @@ TimeSeries TimeSeries::operator+(const TimeSeries& other) const {
 }
 
 TimeSeries& TimeSeries::operator+=(const TimeSeries& other) {
-    *this = *this + other;
-    return *this;
+    return *this = *this + other;
 }
 
 bool TimeSeries::operator<(const TimeSeries& other) const {
@@ -72,4 +70,11 @@ TimeSeries TimeSeries::make_random(const MeasurementFactory& factory, int size) 
 TimeSeries::TimeSeries() {
     std::vector<MeasurementW> empty_vec;
     value = empty_vec;
+}
+
+TimeSeries& TimeSeries::operator=(TimeSeries&& other) {
+    if (this != &other) {
+        value = std::exchange(other.value, std::make_unique<MeasurementW>());
+    }
+    return *this;
 }

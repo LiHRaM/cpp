@@ -14,6 +14,7 @@ class Measurement {
     friend std::ostream &operator<<(std::ostream &os, const Measurement &data);
 
     virtual std::string to_string() const = 0;
+    virtual ~Measurement() = 0;
 
    private:
     virtual bool smaller_than(const Measurement &other) = 0;
