@@ -1,2 +1,10 @@
 project(Extended_2)
-add_executable(main TimeSeries.cpp TimeSeries.h TimeSeriesW.cpp TimeSeriesW.h values.h bins/main.cpp Measurement.h MeasurementFactory.h MeasurementW.cpp MeasurementW.h)
+add_executable(main
+        bins/main.cpp
+        values.h
+        TimeSeries.h TimeSeries.cpp
+        TimeSeriesW.h TimeSeriesW.cpp
+        Measurement.h Measurement.cpp
+        MeasurementW.h Measurement.cpp
+        MeasurementFactory.h MeasurementW.cpp
+        )

@@ -20,7 +20,7 @@ TimeSeries TimeSeries::operator+(const TimeSeries& other) const {
     for (; i < longer.size(); i++) {
         *measurements[i] = *longer[i];
     }
-    return TimeSeries{measurements};
+    return TimeSeries{std::move(measurements)};
 }
 
 TimeSeries& TimeSeries::operator+=(const TimeSeries& other) {
@@ -31,20 +31,8 @@ bool TimeSeries::operator<(const TimeSeries& other) const {
     return *max - *min < *other.max - *other.min;
 }
 
-TimeSeries::TimeSeries(std::vector<MeasurementW> value) {
-    for (auto& i : value) {
-        if (*max < *i) {
-            *max = *i;
-        }
-        if (*i < *max) {
-            *min = *i;
-        }
-    }
-    this->value = std::move(value);
-}
-
-void TimeSeries::add_value(const MeasurementW val) {
-    value.push_back(val);
+void TimeSeries::add_value(MeasurementW& val) {
+    value.push_back(std::move(val));
 }
 
 std::ostream& operator<<(std::ostream& os, const TimeSeries& series) {
@@ -64,17 +52,24 @@ TimeSeries TimeSeries::make_random(const MeasurementFactory& factory, int size) 
     for (int i = 0; i < size; i++) {
         measurements.push_back(factory.get_rand());
     }
-    return TimeSeries{measurements};
-}
-
-TimeSeries::TimeSeries() {
-    std::vector<MeasurementW> empty_vec;
-    value = empty_vec;
+    return TimeSeries{std::move(measurements)};
 }
 
 TimeSeries& TimeSeries::operator=(TimeSeries&& other) {
     if (this != &other) {
-        value = std::exchange(other.value, std::make_unique<MeasurementW>());
+        value = std::exchange(other.value, std::vector<MeasurementW>{});
     }
     return *this;
+}
+
+TimeSeries::TimeSeries(std::vector<MeasurementW>&& value) {
+    for (auto& i : value) {
+        if (*max < *i) {
+            *max = *i;
+        }
+        if (*i < *max) {
+            *min = *i;
+        }
+    }
+    this->value = std::move(value);
 }

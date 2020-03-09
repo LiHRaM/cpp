@@ -7,19 +7,19 @@
 
 class TimeSeries {
    public:
-    TimeSeries();
+    TimeSeries() : value{std::vector<MeasurementW>{}} {};
     ~TimeSeries() = default;
-    explicit TimeSeries(std::vector<MeasurementW> value);
+    explicit TimeSeries(std::vector<MeasurementW> &&value);
 
     // Delete the copy constructor
     TimeSeries(const TimeSeries &other) = delete;
 
     // Move constructor
-    TimeSeries(TimeSeries &&other) = default;
+    TimeSeries(TimeSeries &&other) noexcept : value{std::move(other.value)} {};
 
     static TimeSeries make_random(const MeasurementFactory &factory, int size);
 
-    void add_value(MeasurementW val);
+    void add_value(MeasurementW &val);
 
     TimeSeries operator+(const TimeSeries &other) const;
     TimeSeries &operator+=(const TimeSeries &other);
