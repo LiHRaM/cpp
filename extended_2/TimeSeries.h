@@ -2,7 +2,7 @@
 #include <memory>
 #include <vector>
 
-#include "MeasurementFactory.h"
+#include "Factories/MeasurementFactory.h"
 #include "MeasurementW.h"
 
 class TimeSeries {

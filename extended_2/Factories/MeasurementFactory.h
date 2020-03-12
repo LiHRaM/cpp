@@ -1,9 +1,9 @@
 #pragma once
 
-#include "MeasurementW.h"
+#include "../MeasurementW.h"
 
 class MeasurementFactory {
    public:
-    virtual ~MeasurementFactory() = 0;
+    virtual ~MeasurementFactory() = default;
     virtual MeasurementW get_rand() const = 0;
 };

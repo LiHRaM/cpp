@@ -5,7 +5,7 @@
 
 class Measurement {
    public:
-    virtual ~Measurement() = 0;
+    virtual ~Measurement() {};
     virtual std::string to_string() const = 0;
 
     bool operator<(const Measurement &other);
@@ -15,7 +15,7 @@ class Measurement {
     std::unique_ptr<Measurement> operator=(std::unique_ptr<Measurement> other);
     friend std::ostream &operator<<(std::ostream &os, const Measurement &data);
 
-   private:
+   protected:
     virtual bool smaller_than(const Measurement &other) = 0;
     virtual std::unique_ptr<Measurement> plus(const Measurement &other) = 0;
     virtual std::unique_ptr<Measurement> minus(const Measurement &other) = 0;
